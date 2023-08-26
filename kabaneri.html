@@ -54,6 +54,7 @@ body {
                 <th>高確複合</th>
                 <th>減算PT</th>
                 <th>CZ当選</th>
+	       <th>AT当選</th>
             </tr>
         </thead>
         <tbody>
@@ -93,6 +94,9 @@ body {
                 <td>
                     <button onclick="czWon('無名')">CZ当選</button>
                 </td>
+<td rowspan="3">
+    <button onclick="atAllWon()">AT当選</button>
+</td>
             </tr>
             <tr>
                 <td class="生駒-col">生駒</td>
@@ -335,9 +339,6 @@ function czWon(name) {
 
     updateTotal(name);
     updateTotal('下' + name);  // 下のテーブルの合計も更新
-    
-    // 通常時点灯率を明示的に再計算
-    // calculateNormalLitRate();
 }
 
 
@@ -361,28 +362,34 @@ function calculateNormalLitRate() {
 }
 
 function atAllWon() {
-    // 名前のリストをループして各行のデータを加算
-    const names = ['無名', '生駒', '美馬'];
-    const categories = ['通常', '通常点灯', '通常帯', '通常複合', '高確', '高確複合'];
-    for (let name of names) {
-        for (const category in categories) {
-            // 上の表の値を取得
-            const upperTableElementId = `${name}-${category}`;
-            const upperTableElement = document.getElementById(upperTableElementId);
-            const upperValue = parseInt(upperTableElement.textContent, 10);
+    // テーブルの要素を取得
+    let upperTable = document.getElementById('upper-table');
+    let lowerTable = document.getElementById('lower-table');
 
-            // 下の表の要素を取得して、数値を更新
-            const lowerTableElementId = `result-${name}-${category}`;
-            const lowerTableElement = document.getElementById(lowerTableElementId);
-            const currentValue = parseInt(lowerTableElement.value, 10) || 0;
+    // 名前とカテゴリの配列
+    let names = ['無名', '生駒', '美馬'];
+    let categories = ['通常', '通常点灯', '通常帯', '通常複合', '高確', '高確複合'];
 
-            lowerTableElement.value = currentValue + upperValue;
+    // 各名前に対して処理を行う
+    names.forEach(name => {
+        // 各カテゴリに対して処理を行う
+        categories.forEach(category => {
+            // 上のテーブルと下のテーブルからセル/入力要素を取得
+            let upperCell = upperTable.querySelector(`#${name}-${category}`);
+            let lowerInput = lowerTable.querySelector(`#下${name}-${category}`);
 
-            // 上の表のデータをクリア
-            upperTableElement.textContent = '0';
-        }
-    }
+            // 値を取得して加算
+            let upperValue = parseInt(upperCell.textContent, 10);
+            let lowerValue = parseInt(lowerInput.value, 10);
+            lowerInput.value = upperValue + lowerValue;
+
+            // 上のテーブルの値を0にリセット
+            upperCell.textContent = 0;
+        });
+        document.getElementById(`${name}-合計`).textContent = 0;
+    });
 }
+
 
     </script>
 </body>
