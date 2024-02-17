@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>カウンターアプリ</title>
+    <title>カバネリカウンター</title>
     <style>
         table, th, td {
             border: 1px solid black;
@@ -38,6 +38,11 @@ body {
     text-align: center;
 }
 
+#mumei-table {
+    margin: 0 auto; /* 中央揃え */
+    text-align: center;
+}
+
     </style>
 </head>
 <body>
@@ -48,7 +53,6 @@ body {
                 <th></th>
                 <th>通常</th>
                 <th>通常点灯</th>
-                <th>通常帯</th>
                 <th>通常複合</th>
                 <th>高確</th>
                 <th>高確複合</th>
@@ -69,11 +73,6 @@ body {
                     <button onclick="changeCount('無名', '通常点灯', 1)">+</button>
                     <button onclick="changeCount('無名', '通常点灯', -1)">-</button> 
                     <span id="無名-通常点灯">0</span>
-                </td>
-                <td>
-                    <button onclick="changeCount('無名', '通常帯', 1)">+</button>
-                    <button onclick="changeCount('無名', '通常帯', -1)">-</button> 
-                    <span id="無名-通常帯">0</span>
                 </td>
                 <td>
                     <button onclick="changeCount('無名', '通常複合', 1)">+</button>
@@ -111,11 +110,6 @@ body {
                     <span id="生駒-通常点灯">0</span>
                 </td>
                 <td>
-                    <button onclick="changeCount('生駒', '通常帯', 1)">+</button>
-                    <button onclick="changeCount('生駒', '通常帯', -1)">-</button> 
-                    <span id="生駒-通常帯">0</span>
-                </td>
-                <td>
                     <button onclick="changeCount('生駒', '通常複合', 1)">+</button>
                     <button onclick="changeCount('生駒', '通常複合', -1)">-</button> 
                     <span id="生駒-通常複合">0</span>
@@ -148,11 +142,6 @@ body {
                     <span id="美馬-通常点灯">0</span>
                 </td>
                 <td>
-                    <button onclick="changeCount('美馬', '通常帯', 1)">+</button>
-                    <button onclick="changeCount('美馬', '通常帯', -1)">-</button> 
-                    <span id="美馬-通常帯">0</span>
-                </td>
-                <td>
                     <button onclick="changeCount('美馬', '通常複合', 1)">+</button>
                     <button onclick="changeCount('美馬', '通常複合', -1)">-</button> 
                     <span id="美馬-通常複合">0</span>
@@ -183,7 +172,6 @@ body {
                 <th></th>
                 <th>通常</th>
                 <th>通常点灯</th>
-                <th>通常帯</th>
                 <th>通常複合</th>
                 <th>高確</th>
                 <th>高確複合</th>
@@ -198,9 +186,6 @@ body {
 </td>
 <td>
     <input type="number" id="下無名-通常点灯" value="0" onchange="updateTotal('下無名')">
-</td>
-<td>
-    <input type="number" id="下無名-通常帯" value="0" onchange="updateTotal('下無名')">
 </td>
 <td>
     <input type="number" id="下無名-通常複合" value="0" onchange="updateTotal('下無名')">
@@ -222,9 +207,6 @@ body {
 </td>
 <td>
     <input type="number" id="下生駒-通常点灯" value="0" onchange="updateTotal('下生駒')">
-</td>
-<td>
-    <input type="number" id="下生駒-通常帯" value="0" onchange="updateTotal('下生駒')">
 </td>
 <td>
     <input type="number" id="下生駒-通常複合" value="0" onchange="updateTotal('下生駒')">
@@ -249,9 +231,6 @@ body {
     <input type="number" id="下美馬-通常点灯" value="0" onchange="updateTotal('下美馬')">
 </td>
 <td>
-    <input type="number" id="下美馬-通常帯" value="0" onchange="updateTotal('下美馬')">
-</td>
-<td>
     <input type="number" id="下美馬-通常複合" value="0" onchange="updateTotal('下美馬')">
 </td>
 <td>
@@ -266,62 +245,89 @@ body {
 </tr>
         </tbody>
     </table>
+
+<br>
+ <!-- 無名CZベルナビカウント用 -->
+ <table id="mumei-table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>ベルナビ回数</th>
+            <th>ベル回数</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="無名-col">無名CZ</td>
+            <td>
+                <button onclick="changeCount('無名', 'ベルナビ', 1)">+</button>
+                <button onclick="changeCount('無名', 'ベルナビ', -1)">-</button> 
+                <span id="無名-ベルナビ">0</span>
+            </td>
+            <td>
+                <button onclick="changeCount('無名', 'ベル回数', 1)">+</button>
+                <button onclick="changeCount('無名', 'ベル回数', -1)">-</button> 
+                <span id="無名-ベル回数">0</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
 </div>
    
 
-    <script>
-        function increment(name, category) {
-            const id = `${name}-${category}`;
-            const counterElement = document.getElementById(id);
-            let currentValue = parseInt(counterElement.textContent, 10);
-            counterElement.textContent = currentValue + 1;
-        }
+<script>
+function increment(name, category) {
+    const id = `${name}-${category}`;
+    const counterElement = document.getElementById(id);
+    let currentValue = parseInt(counterElement.textContent, 10);
+    counterElement.textContent = currentValue + 1;
+}
 
-        function decrement(name, category) {
-            const id = `${name}-${category}`;
-            const counterElement = document.getElementById(id);
-            let currentValue = parseInt(counterElement.textContent, 10);
-            if (currentValue > 0) {
-                counterElement.textContent = currentValue - 1;
-            }
-        }
+function decrement(name, category) {
+    const id = `${name}-${category}`;
+    const counterElement = document.getElementById(id);
+    let currentValue = parseInt(counterElement.textContent, 10);
+    if (currentValue > 0) {
+        counterElement.textContent = currentValue - 1;
+    }
+}
 
-        const points = {
-            '通常': 1,
-            '通常点灯': 15,
-            '通常帯': 1,
-            '通常複合': 15,
-            '高確': 15,
-            '高確複合': 30
-        };
+const points = {
+    '通常': 1,
+    '通常点灯': 15,
+    '通常複合': 15,
+    '高確': 15,
+    '高確複合': 30
+};
 
-        function changeCount(name, category, incrementValue) {
-            const id = `${name}-${category}`;
-            const counterElement = document.getElementById(id);
-            let currentValue = parseInt(counterElement.textContent, 10);
+function changeCount(name, category, incrementValue) {
+    const id = `${name}-${category}`;
+    const counterElement = document.getElementById(id);
+    let currentValue = parseInt(counterElement.textContent, 10);
 
-            if (incrementValue > 0 || (incrementValue < 0 && currentValue > 0)) {
-                currentValue += incrementValue;
-                counterElement.textContent = currentValue;
-            }
-            updateTotal(name);
-        }
+    if (incrementValue > 0 || (incrementValue < 0 && currentValue > 0)) {
+        currentValue += incrementValue;
+        counterElement.textContent = currentValue;
+    }
+    updateTotal(name);
+}
 
-        function updateTotal(name) {
-            let total = 0;
-            for (const category in points) {
-                const id = `${name}-${category}`;
-                const count = parseInt(document.getElementById(id).textContent, 10);
-                total += count * points[category];
-            }
-            document.getElementById(`${name}-合計`).textContent = total;
-        }
+function updateTotal(name) {
+    let total = 0;
+    for (const category in points) {
+        const id = `${name}-${category}`;
+        const count = parseInt(document.getElementById(id).textContent, 10);
+        total += count * points[category];
+    }
+    document.getElementById(`${name}-合計`).textContent = total;
+}
 
 function czWon(name) {
     const upperTable = document.getElementById('upper-table');
     const lowerTable = document.getElementById('lower-table');
 
-    const categories = ['通常', '通常点灯', '通常帯', '通常複合', '高確', '高確複合'];
+    const categories = ['通常', '通常点灯', '通常複合', '高確', '高確複合'];
     categories.forEach(category => {
         const upperCell = upperTable.querySelector(`#${name}-${category}`);
         const lowerInput = lowerTable.querySelector(`#下${name}-${category}`);
@@ -345,13 +351,12 @@ function czWon(name) {
 function calculateNormalLitRate() {
     const lowerTable = document.getElementById('lower-table');
 
-    const categories = ['通常', '通常点灯', '通常帯'];
+    const categories = ['通常', '通常点灯'];
     let normal = 0, normalLit = 0, normalBand = 0, totalCZWins = 0;
 
     ['無名', '生駒', '美馬'].forEach(name => {
     normal += Number(lowerTable.querySelector(`#下${name}-通常`).value);
     normalLit += Number(lowerTable.querySelector(`#下${name}-通常点灯`).value);
-    normalBand += Number(lowerTable.querySelector(`#下${name}-通常帯`).value);
     
     // CZ当選回数の合計も取得
     totalCZWins += Number(lowerTable.querySelector(`#下${name}-CZ回数`).value);
@@ -368,7 +373,7 @@ function atAllWon() {
 
     // 名前とカテゴリの配列
     let names = ['無名', '生駒', '美馬'];
-    let categories = ['通常', '通常点灯', '通常帯', '通常複合', '高確', '高確複合'];
+    let categories = ['通常', '通常点灯', '通常複合', '高確', '高確複合'];
 
     // 各名前に対して処理を行う
     names.forEach(name => {
@@ -391,6 +396,6 @@ function atAllWon() {
 }
 
 
-    </script>
+</script>
 </body>
 </html>
